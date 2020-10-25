@@ -1,15 +1,15 @@
 from flask import Flask,request,Response,render_template
-# from database.dp import initialize_db
-# from database.models import Movie
+from database.dp import initialize_db
+from database.models import Movie
 
 
 app = Flask(__name__)
 
-    # app.config['MONGODB_SETTINGS'] = {
-    #     'host': 'mongodb://localhost/movie-bag'
-    # }
+app.config['MONGODB_SETTINGS'] = {
+    'host': 'mongodb://localhost/movie-bag'
+}
 
-    # initialize_db(app)
+initialize_db(app)
 
 @app.route('/home')
 def check_home():
