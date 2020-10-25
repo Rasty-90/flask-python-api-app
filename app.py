@@ -18,25 +18,28 @@ def check_home():
 @app.route('/about')
 def check_about():
     return render_template('about.html', title='about')
-    # def get_movies():
-    #     movies = Movie.objects().to_json()
-    #     return Response(movies, mimetype="application/json", status=200)
 
-    # @app.route('/movies', methods=['POST'])
-    #     body = request.get_json()
-    #     movie = Movie(**body).save()
-    #     id = movie.id
-    #     return {'id': str(id)}, 200
+@app.route('/movies')    
+def get_movies():
+    movies = Movie.objects().to_json()
+    return Response(movies, mimetype="application/json", status=200)
 
-    # @app.route('/movies/<id>', methods=['PUT'])
-    # def update_movie(id):
-    #     body = request.get_json()
-    #     Movie.objects.get(id=id).update(**body)
-    #     return '', 200
+@app.route('/movies', methods=['POST'])
+def add_movie():
+    body = request.get_json()
+    movie = Movie(**body).save()
+    id = movie.id
+    return {'id': str(id)}, 200
 
-    # @app.route('/movies/<id>')
-    # def get_movie(id):
-    #     movies = Movie.objects.get(id=id).to_json()
-    #     return Response(movies, mimetype="application/json", status=200)
+@app.route('/movies/<id>', methods=['PUT'])
+def update_movie(id):
+    body = request.get_json()
+    Movie.objects.get(id=id).update(**body)
+    return '', 200
+
+@app.route('/movies/<id>')
+def get_movie(id):
+    movies = Movie.objects.get(id=id).to_json()
+    return Response(movies, mimetype="application/json", status=200)
 
 app.run()
