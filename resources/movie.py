@@ -1,17 +1,19 @@
-from flask import Response, request
+from flask import Response, request,render_template,make_response
 from database.models import Movie
 from flask_restful import Resource
 
 class MoviesApi(Resource):
     def get(self):
         movies = Movie.objects().to_json()
-        return Response(movies,mimetype="application/json", status=200)
+        headers = {'Content-Type': 'text/html'}
+        return make_response(render_template('home.html'),200,headers)
 
     def post(self):
         body = request.get_json()
         movie= Movie(**body).save()
         id=movie.id 
-        return {'id': str(id)}, 200
+        headers = {'Content-Type': 'text/html'}
+        return make_response(render_template('home.html'),200,headers)
 
 
 class MovieApi(Resource):

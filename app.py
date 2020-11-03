@@ -14,13 +14,4 @@ app.config['MONGODB_SETTINGS'] = {
 initialize_db(app)
 initialize_routes(api)
 
-@app.route('/home')
-def check_home():
-    return render_template('home.html', title='Home')
-
-@app.route('/about')
-def check_about():
-    return render_template('about.html', title='about')
-
-
 app.run()
