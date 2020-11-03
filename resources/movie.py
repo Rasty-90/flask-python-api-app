@@ -1,19 +1,21 @@
-from flask import Response, request,render_template,make_response
+from flask import Response, request,render_template
 from database.models import Movie
 from flask_restful import Resource
+import json
 
 class MoviesApi(Resource):
     def get(self):
         movies = Movie.objects().to_json()
-        headers = {'Content-Type': 'text/html'}
-        return make_response(render_template('home.html'),200,headers)
+        #creates a dictionary over the Mongo Object
+        dicts = json.loads(movies)
+        return Response(render_template('home.html',movies=dicts),200,mimetype='text/html')
 
     def post(self):
         body = request.get_json()
         movie= Movie(**body).save()
         id=movie.id 
         headers = {'Content-Type': 'text/html'}
-        return make_response(render_template('home.html'),200,headers)
+        return Response(render_template('home.html'),200,headers)
 
 
 class MovieApi(Resource):

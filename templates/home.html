@@ -4,5 +4,8 @@
   <div class="home">
     <h1>A Python product</h1>
     <p>This website was built with Python via the Flask framework.</p>
+    {% for key in movies %}
+    <p>{{key.name}}</p>
+    {% endfor %}
   </div>
 {% endblock %}
