@@ -1,4 +1,4 @@
-from flask import Response, request,render_template
+from flask import Response, request
 from database.models import Movie
 from flask_restful import Resource
 import json
@@ -8,14 +8,13 @@ class MoviesApi(Resource):
         movies = Movie.objects().to_json()
         #creates a dictionary over the Mongo Object
         dicts = json.loads(movies)
-        return Response(render_template('home.html',movies=dicts),200,mimetype='text/html')
+        return dicts,200
 
     def post(self):
         body = request.get_json()
         movie= Movie(**body).save()
         id=movie.id 
-        headers = {'Content-Type': 'text/html'}
-        return Response(render_template('home.html'),200,headers)
+        return id,200
 
 
 class MovieApi(Resource):
