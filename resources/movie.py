@@ -1,32 +1,32 @@
 from flask import Response, request
-from database.models import Movie
+from database.models import Patient
 from flask_restful import Resource
 import json
 
-class MoviesApi(Resource):
+class PatientsApi(Resource):
     def get(self):
-        movies = Movie.objects().to_json()
+        patients = Patient.objects().to_json()
         #creates a dictionary over the Mongo Object
-        dicts = json.loads(movies)
+        dicts = json.loads(patients)
         return dicts,200
 
     def post(self):
         body = request.get_json()
-        movie= Movie(**body).save()
-        id=movie.id 
+        patient= Patient(**body).save()
+        id=patient.id 
         return id,200
 
 
-class MovieApi(Resource):
+class PatientApi(Resource):
     def put(self,id):
         body = request.get_json()
-        Movie.objects.get(id=id).update(**body)
+        Patient.objects.get(id=id).update(**body)
         return '',200
 
     def delete(self, id):
-        movie = Movie.objects.get(id=id).delete()
+        patient = Patient.objects.get(id=id).delete()
         return '', 200
 
     def get(self, id):
-        movies = Movie.objects.get(id=id).to_json()
-        return Response(movies, mimetype="application/json", status=200)
+        patients = Patient.objects.get(id=id).to_json()
+        return Response(patients, mimetype="application/json", status=200)
