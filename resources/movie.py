@@ -13,8 +13,8 @@ class PatientsApi(Resource):
     def post(self):
         body = request.get_json()
         patient= Patient(**body).save()
-        id=patient.id 
-        return id,200
+        #id=patient.id 
+        return "",200
 
 
 class PatientApi(Resource):
@@ -29,4 +29,5 @@ class PatientApi(Resource):
 
     def get(self, id):
         patients = Patient.objects.get(id=id).to_json()
+        dicts = json.loads(patients)
         return Response(patients, mimetype="application/json", status=200)

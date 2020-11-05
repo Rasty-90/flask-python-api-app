@@ -1,4 +1,5 @@
 from .dp import db
+import mongoengine_goodjson as gj
 
 class Patient(db.Document):
     surname = db.StringField(required=True)

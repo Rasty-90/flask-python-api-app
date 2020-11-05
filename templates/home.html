@@ -21,7 +21,8 @@
                 <td>{{ patient.roomn}}</td>
                 <td>{{ patient.bedn}}</td>
                 <td>{{ patient.doctor}}</td>
-                <td><button>Προσωπικά στοιχεία</button></td>
+                #TODO: SEND ID WITH BUTTON
+                <td><button  href="127.0.0.0.1:5000/profile?id="+{{patient.id}}>Προσωπικά στοιχεία {{patient.id}} </button></td>
                 <td><button>Διαγραφή</button></td>
             </tr>
         {% endfor %}

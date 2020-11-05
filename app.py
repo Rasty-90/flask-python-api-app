@@ -22,6 +22,13 @@ def index():
     dicts = json.loads(reqres.content)
     return render_template("home.html", title='Home', patients=dicts)
 
+@app.route('/profile')
+def patprof():
+    id=request.args.get('id')
+    reqres = requests.get('http://127.0.0.1:5000/patients/'+id)
+    dicts = json.loads(reqres.content)
+    return render_template("profile.html", title='Home', patients=dicts)
+
 
 app.run()
 
