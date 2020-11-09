@@ -1,0 +1,31 @@
+
+{% extends "layout.html" %}
+{% block content %}
+  <div class="home">
+    <h1>ΕΝΕΡΓΑ ΠΕΡΙΣΤΑΤΙΚΑ</h1>
+    <p></p>
+    <a href="/newCase"><button>Νέο Περιστατικό</button></a>
+        <table style="width:100%">
+            <tr>
+                <th>Ασθενής</th>
+                <th>Δωμάτιο</th>
+                <th>Κλίνη</th>
+                <th>Υπεύθυνος Ιατρός</th>
+                <th>Covid Test</th>
+                <th></th>
+                <th></th>
+            </tr>
+            {% for case in cases %}
+            <tr>
+                <td>{{case.patientSurname}} {{case.patientName}}</td>
+                <td>{{case.roomn}}</td>
+                <td>{{case.bedn}}</td>
+                <td>{{case.doctor}}</td>
+                <td>{{case.covidStatus}}</td>
+                <td><a href="/profile?id={{case.patientID}}"><button>Προσωπικά στοιχεία</button></a></td>
+                <td><button>Διαγραφή</button></td>
+            </tr>
+        {% endfor %}
+        </table>
+     </div>
+{% endblock %}

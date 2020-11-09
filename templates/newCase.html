@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+<script src="{{url_for('static', filename='scripts.js')}}"></script>
+<div class="profile">
+    <h1>ΝΕΟ ΠΕΡΙΣΤΑΤΙΚΟ</h1></p>
+    <form method="post" action="/newPatient">
+
+    <label for="patient">Επιλέξτε ασθενή:</label>
+    <p>Σε περίπτωση νέου ασθενή ανοίγετε πρώτα <a href="/newPatient">καρτέλα ασθενούς</a></p>
+    <select id="patient" name="patient">
+        {% for patient in patients %}
+      <option value="{{patient.id}}">{{patient.surname}} {{patient.name}}</option>
+      {% endfor %}
+    </select>
+<!-- 
+    <p>Δωμάτιο:<input type='text' name="patientName"></input></p>
+    <p>Κλίνη:<input type='text' name="patientAmka"></input></p>
+    <p>Υπεύθυνος Ιατρός:<input type='text' name="patientContactPhone"></input></p>
+    <p>Covid Test:<input type='text' name="patientContactPhone"></input></p> -->
+    <input type="submit" name="sumbit" value="Καταχώριση εγγραφής"/>
+    </form>
+
+</div>
+{% endblock %}
+

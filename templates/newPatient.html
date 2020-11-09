@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+<script src="{{url_for('static', filename='scripts.js')}}"></script>
+<div class="profile">
+    <h1>ΝΕΟΣ ΑΣΘΕΝΗΣ</h1></p>
+    <form method="post" action="/newPatient">
+    <p>Επώνυμο<input type='text' name="patientSurname"></input></p>
+    <p>Όνομα: <input type='text' name="patientName"></input></p>
+    <p>ΑΜΚΑ: <input type='text' name="patientAmka"></input></p>
+    <p>Τηλ. επικοινωνίας: <input type='text' name="patientContactPhone"></input></p>
+    <input type="submit" name="sumbit" value="Καταχώριση εγγραφής"/>
+    </form>
+
+</div>
+{% endblock %}
