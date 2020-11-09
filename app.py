@@ -28,7 +28,7 @@ def indexcases():
         case['patientName']=patientCase['name']
     return render_template("cases.html", title='Περιστατικά', cases=cases)
 
-#TODO: EDIT CASE PAGE, DELETE CASE
+#TODO:EDIT CASE PAGE ,DELETE CASE
 
 #Νέα περιστατικά
 @app.route('/newCase', methods=['GET','POST'])
@@ -54,6 +54,14 @@ def newCase():
         return render_template("success.html", title='Επιτυχής εγγραφή')
     else:    
         return render_template("newCase.html", title='Νέο περιστατικό',patients=patients)
+
+#edit case
+@app.route('/casedetails', methods=['GET,POST'])
+def caseDets():
+    id = id=request.args.get('id')
+    reqres = requests.get('http://127.0.0.1:5000/case/'+id)
+    dicts = json.loads(reqres.content)
+    return render_template("casedetails.html", title='Προφίλ ασθενούς', case=dicts)
 
 #Routes για τις σελίδες των ασθενών
 @app.route('/indexpatients')
