@@ -13,5 +13,5 @@ class Case(gj.Document):
     bedn=db.StringField(required=True)
     doctor=db.StringField(required=True)
     status=db.BooleanField(required=True)
-    covidStatus=db.BooleanField(required=True)
+    covidStatus=db.StringField(required=True)
 

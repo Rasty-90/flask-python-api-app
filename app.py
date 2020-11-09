@@ -37,8 +37,19 @@ def newCase():
     patients = json.loads(patientsres.content)
     if request.method == 'POST':
     #takes from form
-        patientName = request.form['patient']
-        print (patientName)
+        patientID = request.form['patient']
+        roomn = request.form['roomn']
+        bedn = request.form['bedn']
+        doctor = request.form['doctor']
+        covidStatus = request.form['covidStatus']
+        newCase = {
+                "patientID": patientID,
+                "roomn": roomn,
+                "bedn": bedn,
+                "doctor": doctor,
+                "covidStatus":covidStatus
+            }
+        print(newCase)
         return render_template("success.html", title='Επιτυχής εγγραφή')
     else:    
         return render_template("newCase.html", title='Νέο περιστατικό',patients=patients)
