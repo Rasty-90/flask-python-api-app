@@ -56,12 +56,14 @@ def newCase():
         return render_template("newCase.html", title='Νέο περιστατικό',patients=patients)
 
 #edit case
-@app.route('/casedetails', methods=['GET,POST'])
+@app.route('/casedetails', methods=['GET','POST'])
 def caseDets():
     id = id=request.args.get('id')
     reqres = requests.get('http://127.0.0.1:5000/case/'+id)
     dicts = json.loads(reqres.content)
-    return render_template("casedetails.html", title='Προφίλ ασθενούς', case=dicts)
+    patientsres = requests.get('http://127.0.0.1:5000/patients')
+    patients = json.loads(patientsres.content)
+    return render_template("casedetails.html", title='Προφίλ ασθενούς', case=dicts, patients=patients)
 
 #Routes για τις σελίδες των ασθενών
 @app.route('/indexpatients')
@@ -125,11 +127,3 @@ def newPat():
 
 
 app.run(debug=True)
-
-# Η βάση θα αποτελείται από ένα table με τα προσωπικά στοιχεία των ασθενών (όνομα, επώνυμο, αμκα, κιν. επικοινωνίας)
-# και ένα table που θα αφορά τα ιατρικά τους στοιχεία (Ημ, εισαγωγής, υπεύθυνος γιατρός, αρ. δωματίου, αρ. κρεβατιού).
-# H εφαρμογή θα είναι ένα web app (non responsive) που θα υποστηρίζει απλές CRUD ενέργειες για όλα τα πεδία της βάσης.
-# Το back end θα γραφτεί σε flask, και για βάση θα χρησιμοποιηθεί η mongoDB μέσω της βιβλιοθήκης pymongo.Το deliverable θα ειναι 
-# (εδω γραφει σουπακι για docker)Το τελικό θα περιέχει τα αναγκαία comments αλλά όχι documentation.Timetable: 5/11
-# ενα τελικό draft proof of concept με τις βασικές λειτουργίες20/11 επίδειξη demo για τυχόν μικροαλλαγές (μεγάλες αλλαγές δε θα μπορούν να γίνουν)
-# 30/11 παράδοση τελικού, θα χρειαστεί να γίνει μια παρουσίαση και πλήρης επεξήγηση του κώδικα ώστε να ξέρει ο συνάδελφος τι να γράψει στην τεχνική ανάλυση.
