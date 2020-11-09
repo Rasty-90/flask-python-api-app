@@ -37,7 +37,7 @@ def newCase():
     patients = json.loads(patientsres.content)
     if request.method == 'POST':
     #takes from form
-        patientName = request.get['patient']
+        patientName = request.form['patient']
         print (patientName)
         return render_template("success.html", title='Επιτυχής εγγραφή')
     else:    
