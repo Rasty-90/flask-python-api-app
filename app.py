@@ -47,9 +47,10 @@ def newCase():
                 "roomn": roomn,
                 "bedn": bedn,
                 "doctor": doctor,
+                "status": "true",
                 "covidStatus":covidStatus
             }
-        print(newCase)
+        r = requests.post('http://127.0.0.1:5000/cases', json = newCase)
         return render_template("success.html", title='Επιτυχής εγγραφή')
     else:    
         return render_template("newCase.html", title='Νέο περιστατικό',patients=patients)

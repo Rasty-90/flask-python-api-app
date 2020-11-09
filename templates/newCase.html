@@ -15,7 +15,12 @@
     <p>Δωμάτιο:<input type='text' name="roomn"></input></p>
     <p>Κλίνη:<input type='text' name="bedn"></input></p>
     <p>Υπεύθυνος Ιατρός:<input type='text' name="doctor"></input></p>
-    <p>Covid Test:<input type='text' name="covidStatus"></input></p>
+    <label for="covidStatus">Covid Test:</label>
+    <select id="covidStatus" name="covidStatus">
+      <option value="Θετικό">Θετικό</option>
+      <option value="Αρνητικό">Αρνητικό</option>
+      <option value="Αδιευκρίνιστο">Αδιευκρίνιστο</option>
+    </select>
     <p>*Όλα τα νέα περιστατικά δημιουργούνται αυτομάτως ως ενεργά</p>
     <input type="submit" name="sumbit" value="Καταχώριση εγγραφής"/>
     </form>
