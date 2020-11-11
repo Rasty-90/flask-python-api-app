@@ -8,6 +8,7 @@ import json
 app = Flask(__name__)
 api=Api(app)
 
+#TODO: CONGIG FILE
 app.config['MONGODB_SETTINGS'] = {
     'host': 'mongodb://localhost/hospital-db'
 }
@@ -28,7 +29,8 @@ def indexcases():
         case['patientName']=patientCase['name']
     return render_template("cases.html", title='Περιστατικά', cases=cases)
 
-#TODO:EDIT CASE PAGE ,DELETE CASE
+#TODO:DELETE CASE
+#TODO: ASCENDING ORDER IN RETURNING PATIENTS
 
 #Νέα περιστατικά
 @app.route('/newCase', methods=['GET','POST'])
@@ -55,15 +57,25 @@ def newCase():
     else:    
         return render_template("newCase.html", title='Νέο περιστατικό',patients=patients)
 
-#edit case
+#Επεξεργασία/διαγραφή περιστατικού
 @app.route('/casedetails', methods=['GET','POST'])
 def caseDets():
+    #TODO: DATA OF PATIENT OF CASE
     id = id=request.args.get('id')
     reqres = requests.get('http://127.0.0.1:5000/case/'+id)
     dicts = json.loads(reqres.content)
     patientsres = requests.get('http://127.0.0.1:5000/patients')
     patients = json.loads(patientsres.content)
-    return render_template("casedetails.html", title='Προφίλ ασθενούς', case=dicts, patients=patients)
+    #Εάν χρησιμοποιηθεί η φόρμα 
+    if request.method == 'POST':
+        if request.form['submit'] == 'edit':
+            return "edit"
+        elif request.form['submit'] == 'delete':
+            return "delete"   
+        else:
+            return "εμφανίστηκε σφάλμα"
+    else:        
+        return render_template("casedetails.html", title='Προφίλ ασθενούς', case=dicts, patients=patients)
 
 #Routes για τις σελίδες των ασθενών
 @app.route('/indexpatients')
@@ -72,6 +84,28 @@ def indexpatients():
     patients = json.loads(patientsres.content)
     return render_template("patients.html", title='Aσθενείς', patients=patients)
 
+#Νέος ασθενής
+@app.route('/newPatient',methods=['GET','POST'])
+def newPat():
+    if request.method == 'POST':
+    #takes from form
+        patientSurname = request.form['patientSurname']
+        patientName = request.form['patientName']
+        patientAmka = request.form['patientAmka']
+        patientContactPhone = request.form['patientContactPhone']
+        #creates a python object with data
+        newPatient = {
+            "surname": patientSurname,
+            "name": patientName,
+            "amka": patientAmka,
+            "contactphone":patientContactPhone
+        }
+        r = requests.post('http://127.0.0.1:5000/patients', json = newPatient)
+        return render_template("success.html", title='Επιτυχής εγγραφή')
+    else:
+        return render_template("newPatient.html", title='Νέος Ασθενής')
+
+#Επεξεργασία/διαγραφή ασθενούς
 @app.route('/profile',methods=['GET','POST'])
 def patprof():
     id=request.args.get('id')
@@ -102,28 +136,10 @@ def patprof():
         else:
             return "Εμφανίστηκε σφάλμα στην εφαρμογή"
     else:  
-        return render_template("profile.html", title='Προφίλ ασθενούς', patient=dicts)
+        return render_template("profiledetails.html", title='Προφίλ ασθενούς', patient=dicts)
 
 
-@app.route('/newPatient',methods=['GET','POST'])
-def newPat():
-    if request.method == 'POST':
-    #takes from form
-        patientSurname = request.form['patientSurname']
-        patientName = request.form['patientName']
-        patientAmka = request.form['patientAmka']
-        patientContactPhone = request.form['patientContactPhone']
-        #creates a python object with data
-        newPatient = {
-            "surname": patientSurname,
-            "name": patientName,
-            "amka": patientAmka,
-            "contactphone":patientContactPhone
-        }
-        r = requests.post('http://127.0.0.1:5000/patients', json = newPatient)
-        return render_template("success.html", title='Επιτυχής εγγραφή')
-    else:
-        return render_template("newPatient.html", title='Νέος Ασθενής')
+
 
 
 app.run(debug=True)

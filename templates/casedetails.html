@@ -3,7 +3,7 @@
 <script src="{{url_for('static', filename='scripts.js')}}"></script>
 <div class="profile">
     <h1>ΠΛΗΡΟΦΟΡΙΕΣ ΠΕΡΙΣΤΑΤΙΚΟΥ</h1></p>
-    <form method="post" action="/newCase">
+    <form method="post" action="/casedetails?id={{case.id}}">
 
     <label for="patient">Ασθενής:</label>
     <select id="patient" name="patient">
@@ -23,7 +23,8 @@
       <option value="Αδιευκρίνιστο">Αδιευκρίνιστο</option>
     </select>
     <p></p>
-    <input type="submit" name="sumbit" value="Καταχώριση εγγραφής"/>
+    <input type="submit" value="edit" name="submit"/>
+    <input type="submit" value="delete" name="submit"/>
     </form>
 
 </div>

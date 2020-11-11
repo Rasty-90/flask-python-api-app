@@ -1,0 +1,61 @@
+[{
+  "_id": {
+    "$oid": "5fa5291edb62f84060d010fb"
+  },
+  "patientID": {
+    "$oid": "5fa51edf3e7b7d44d3130b60"
+  },
+  "roomn": "Α5",
+  "bedn": "3",
+  "doctor": "Μαρνέλλης Αλέξανδρος",
+  "status": true,
+  "covidStatus": "Θετικό"
+},{
+  "_id": {
+    "$oid": "5fa52a244ee08561223b4b96"
+  },
+  "patientID": {
+    "$oid": "5fa520943e7b7d44d3130b66"
+  },
+  "roomn": "Β1",
+  "bedn": "1",
+  "doctor": "Καρούλια Ελένη",
+  "status": true,
+  "covidStatus": "Αρνητικό"
+},{
+  "_id": {
+    "$oid": "5fa52c3f7a9100759970603a"
+  },
+  "patientID": {
+    "$oid": "5fa524783e7b7d44d3130b6a"
+  },
+  "roomn": "Β3",
+  "bedn": "1",
+  "doctor": "Μαρνέλλης Αλέξανδρος",
+  "status": true,
+  "covidStatus": "Αδιευκρίνιστο"
+},{
+  "_id": {
+    "$oid": "5fa9776efe1ce4909a40b916"
+  },
+  "patientID": {
+    "$oid": "5fa51edf3e7b7d44d3130b60"
+  },
+  "roomn": "231",
+  "bedn": "3213",
+  "doctor": "3132",
+  "status": true,
+  "covidStatus": "Θετικό"
+},{
+  "_id": {
+    "$oid": "5fac1217ed7b8c915f34879d"
+  },
+  "patientID": {
+    "$oid": "5fa51edf3e7b7d44d3130b60"
+  },
+  "roomn": "231",
+  "bedn": "321321",
+  "doctor": "3132",
+  "status": true,
+  "covidStatus": "Αδιευκρίνιστο"
+}]

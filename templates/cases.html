@@ -13,7 +13,6 @@
                 <th>Υπεύθυνος Ιατρός</th>
                 <th>Covid Test</th>
                 <th></th>
-                <th></th>
             </tr>
             {% for case in cases %}
             <tr>
@@ -23,7 +22,6 @@
                 <td>{{case.doctor}}</td>
                 <td>{{case.covidStatus}}</td>
                 <td><a href="/casedetails?id={{case.id}}"><button>Επεξεργασία περιστατικού</button></a></td>
-                <td><button>Διαγραφή</button></td>
             </tr>
         {% endfor %}
         </table>
