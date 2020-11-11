@@ -2,15 +2,17 @@ from flask import Flask,render_template,request,flash,session
 from database.dp import initialize_db
 from flask_restful import Api
 from resources.routes import initialize_routes
+from config import host_db,host_flask,host_flask_app,host_flask_app_port
 import requests
 import json
+
 
 app = Flask(__name__)
 api=Api(app)
 
 #TODO: CONGIG FILE
 app.config['MONGODB_SETTINGS'] = {
-    'host': 'mongodb://localhost/hospital-db'
+    'host': host_db
 }
 
 initialize_db(app)
@@ -20,22 +22,21 @@ initialize_routes(api)
 @app.route('/index')
 @app.route('/indexcases')
 def indexcases():
-    casesres = requests.get('http://127.0.0.1:5000/cases')
+    casesres = requests.get(host_flask +'/cases')
     cases = json.loads(casesres.content)
     for case in cases: 
-        patientCaseRes = requests.get('http://127.0.0.1:5000/patient/'+case['patientID'])
+        patientCaseRes = requests.get(host_flask +'/patient/'+case['patientID'])
         patientCase = json.loads(patientCaseRes.content)
         case['patientSurname']=patientCase['surname']
         case['patientName']=patientCase['name']
     return render_template("cases.html", title='Περιστατικά', cases=cases)
 
-#TODO:DELETE CASE
 #TODO: ASCENDING ORDER IN RETURNING PATIENTS
 
 #Νέα περιστατικά
 @app.route('/newCase', methods=['GET','POST'])
 def newCase():
-    patientsres = requests.get('http://127.0.0.1:5000/patients')
+    patientsres = requests.get(host_flask +'/patients')
     patients = json.loads(patientsres.content)
     if request.method == 'POST':
     #takes from form
@@ -52,7 +53,7 @@ def newCase():
                 "status": "true",
                 "covidStatus":covidStatus
             }
-        r = requests.post('http://127.0.0.1:5000/cases', json = newCase)
+        r = requests.post(host_flask +'/cases', json = newCase)
         return render_template("success.html", title='Επιτυχής εγγραφή')
     else:    
         return render_template("newCase.html", title='Νέο περιστατικό',patients=patients)
@@ -62,16 +63,29 @@ def newCase():
 def caseDets():
     #TODO: DATA OF PATIENT OF CASE
     id = id=request.args.get('id')
-    reqres = requests.get('http://127.0.0.1:5000/case/'+id)
+    reqres = requests.get(host_flask +'/case/'+id)
     dicts = json.loads(reqres.content)
-    patientsres = requests.get('http://127.0.0.1:5000/patients')
+    patientsres = requests.get(host_flask +'patients')
     patients = json.loads(patientsres.content)
     #Εάν χρησιμοποιηθεί η φόρμα 
     if request.method == 'POST':
         if request.form['submit'] == 'edit':
-            return "edit"
+            patientID = request.form['patient']
+            roomn = request.form['roomn']
+            bedn = request.form['bedn']
+            doctor = request.form['doctor']
+            covidStatus=request.form['covidStatus']
+            case = {
+                "patientID":patientID,
+                "roomn":roomn,
+                "bedn":bedn,
+                "doctor":doctor,
+                "covidStatus":covidStatus
+            }
+            r = requests.put(host_flask +'/case/'+id, json = case)
+            return render_template("success.html", title='Επιτυχής εγγραφή')
         elif request.form['submit'] == 'delete':
-            r = requests.delete('http://127.0.0.1:5000/case/'+id)
+            r = requests.delete(host_flask +'/case/'+id)
              #TODO: MESSAGE FOR DELETING
             return "H διαγραφή έγινε με επιτυχία"   
         else:
@@ -82,7 +96,7 @@ def caseDets():
 #Routes για τις σελίδες των ασθενών
 @app.route('/indexpatients')
 def indexpatients():
-    patientsres = requests.get('http://127.0.0.1:5000/patients')
+    patientsres = requests.get(host_flask +'/patients')
     patients = json.loads(patientsres.content)
     return render_template("patients.html", title='Aσθενείς', patients=patients)
 
@@ -102,7 +116,8 @@ def newPat():
             "amka": patientAmka,
             "contactphone":patientContactPhone
         }
-        r = requests.post('http://127.0.0.1:5000/patients', json = newPatient)
+        r = requests.post(host_flask +'/patients', json = newPatient)
+        #TODO CATCH NotUniqueError AMKA
         return render_template("success.html", title='Επιτυχής εγγραφή')
     else:
         return render_template("newPatient.html", title='Νέος Ασθενής')
@@ -111,7 +126,7 @@ def newPat():
 @app.route('/profile',methods=['GET','POST'])
 def patprof():
     id=request.args.get('id')
-    reqres = requests.get('http://127.0.0.1:5000/patient/'+id)
+    reqres = requests.get(host_flask +'/patient/'+id)
     dicts = json.loads(reqres.content)
     #Εάν χρησιμοποιηθεί η φόρμα 
     if request.method == 'POST':
@@ -129,10 +144,10 @@ def patprof():
                 "amka": patientAmka,
                 "contactphone":patientContactPhone
             }
-            r = requests.put('http://127.0.0.1:5000/patient/'+id, json = newPatient)
+            r = requests.put(host_flask +'/patient/'+id, json = newPatient)
             return render_template("success.html", title='Επιτυχής εγγραφή')
         elif request.form['submit'] == 'delete':
-             r = requests.delete('http://127.0.0.1:5000/patient/'+id)
+             r = requests.delete(host_flask +'/patient/'+id)
              #TODO: MESSAGE FOR DELETING
              return "H διαγραφή έγινε με επιτυχία"
         else:
@@ -143,5 +158,4 @@ def patprof():
 
 
 
-
-app.run(debug=True)
+app.run(debug=True, host = host_flask_app, port=host_flask_app_port)
