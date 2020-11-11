@@ -71,7 +71,9 @@ def caseDets():
         if request.form['submit'] == 'edit':
             return "edit"
         elif request.form['submit'] == 'delete':
-            return "delete"   
+            r = requests.delete('http://127.0.0.1:5000/case/'+id)
+             #TODO: MESSAGE FOR DELETING
+            return "H διαγραφή έγινε με επιτυχία"   
         else:
             return "εμφανίστηκε σφάλμα"
     else:        
