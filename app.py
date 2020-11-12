@@ -10,7 +10,6 @@ import json
 app = Flask(__name__)
 api=Api(app)
 
-#TODO: CONGIG FILE
 app.config['MONGODB_SETTINGS'] = {
     'host': host_db
 }

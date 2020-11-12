@@ -13,7 +13,8 @@ class PatientsApi(Resource):
     This function gets all the Patient objects from the database
     """
     def get(self):
-        patients = Patient.objects().to_json()
+        #the order_by() is used to return results sorted by surname
+        patients = Patient.objects().order_by('surname').to_json()
         #creates a dictionary over the Mongo Object so that it can be parsed
         #as a json file from the rest of the program
         dicts = json.loads(patients)
