@@ -1,6 +1,12 @@
 from .dp import db
 import mongoengine_goodjson as gj
 
+"""
+Each collection in the mongo db is here depicted as a class
+with its respective fields, and an object of each class is invoked 
+from the Api to pass information or actions to the db
+"""
+
 class Patient(gj.Document):
     surname = db.StringField(required=True)
     name = db.StringField(required=True)

@@ -54,7 +54,7 @@ def newCase():
                 "covidStatus":covidStatus
             }
         r = requests.post(host_flask +'/cases', json = newCase)
-        return render_template("success.html", title='Επιτυχής εγγραφή')
+        return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
     else:    
         return render_template("newCase.html", title='Νέο περιστατικό',patients=patients)
 
@@ -65,7 +65,7 @@ def caseDets():
     id = id=request.args.get('id')
     reqres = requests.get(host_flask +'/case/'+id)
     dicts = json.loads(reqres.content)
-    patientsres = requests.get(host_flask +'patients')
+    patientsres = requests.get(host_flask +'/patients')
     patients = json.loads(patientsres.content)
     #Εάν χρησιμοποιηθεί η φόρμα 
     if request.method == 'POST':
@@ -83,11 +83,10 @@ def caseDets():
                 "covidStatus":covidStatus
             }
             r = requests.put(host_flask +'/case/'+id, json = case)
-            return render_template("success.html", title='Επιτυχής εγγραφή')
+            return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
         elif request.form['submit'] == 'delete':
             r = requests.delete(host_flask +'/case/'+id)
-             #TODO: MESSAGE FOR DELETING
-            return "H διαγραφή έγινε με επιτυχία"   
+            return render_template("message.html", title='Επιτυχής διαγραφή', message="H διαγραφή ολοκληρώθηκε με επιτυχία")   
         else:
             return "εμφανίστηκε σφάλμα"
     else:        
@@ -118,7 +117,7 @@ def newPat():
         }
         r = requests.post(host_flask +'/patients', json = newPatient)
         #TODO CATCH NotUniqueError AMKA
-        return render_template("success.html", title='Επιτυχής εγγραφή')
+        return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
     else:
         return render_template("newPatient.html", title='Νέος Ασθενής')
 
@@ -145,11 +144,11 @@ def patprof():
                 "contactphone":patientContactPhone
             }
             r = requests.put(host_flask +'/patient/'+id, json = newPatient)
-            return render_template("success.html", title='Επιτυχής εγγραφή')
+            return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
         elif request.form['submit'] == 'delete':
              r = requests.delete(host_flask +'/patient/'+id)
              #TODO: MESSAGE FOR DELETING
-             return "H διαγραφή έγινε με επιτυχία"
+             return render_template("message.html", title='Επιτυχής διαγραφή', message="H διαγραφή ολοκληρώθηκε με επιτυχία")
         else:
             return "Εμφανίστηκε σφάλμα στην εφαρμογή"
     else:  
