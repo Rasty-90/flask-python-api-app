@@ -1,14 +1,14 @@
 {% extends "layout.html" %}
 {% block content %}
 <script src="{{url_for('static', filename='scripts.js')}}"></script>
-<div class="profile">
+<div>
     <h1>ΝΕΟ ΠΕΡΙΣΤΑΤΙΚΟ</h1></p>
     <form method="post" action="/newCase">
 
     <label for="patient">Επιλέξτε ασθενή:</label>
     <select id="patient" name="patient">
         {% for patient in patients %}
-      <option value="{{patient.id}}">{{patient.surname}} {{patient.name}}</option>
+      <option value="{{patient.id}}">{{patient.surname}} {{patient.name}} (ΑΜΚΑ: {{patient.amka}}}</option>
       {% endfor %}
     </select>
     <p>Σε περίπτωση νέου ασθενή ανοίγετε πρώτα <a href="/newPatient">καρτέλα ασθενούς</a></p>

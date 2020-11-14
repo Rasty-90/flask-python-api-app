@@ -1,11 +1,11 @@
 
 {% extends "layout.html" %}
 {% block content %}
-  <div class="home">
+  <div>
     <h1>ΚΑΤΑΛΟΓΟΣ ΑΣΘΕΝΩΝ</h1>
     <p></p>
-        <a href="/newPatient"><button>Νέος ασθενής</button></a>
-        <table style="width:100%">
+        <a href="/newPatient"><button class="button-class">Νέος ασθενής</button></a>
+        <table class="table-comp">
             <tr>
                 <th>Επώνυμο</th>
                 <th>Όνομα</th>
@@ -20,7 +20,7 @@
                 <td>{{patient.name}}</td>
                 <td>{{patient.amka}}</td>
                 <td>{{patient.contactphone}}</td>
-                <td><a href="/profile?id={{patient.id}}"><button>Επεξεργασία προφίλ</button></a></td>
+                <td><a href="/profile?id={{patient.id}}"><button class="button-class"><i class="fas fa-edit"></i></button></a></td>
             </tr>
         {% endfor %}
         </table>

@@ -5,6 +5,7 @@ from resources.routes import initialize_routes
 from config import host_db,host_flask,host_flask_app,host_flask_app_port
 import requests
 import json
+from mongoengine.errors import NotUniqueError
 
 
 app = Flask(__name__)
@@ -30,7 +31,6 @@ def indexcases():
         case['patientName']=patientCase['name']
     return render_template("cases.html", title='Περιστατικά', cases=cases)
 
-#TODO: ASCENDING ORDER IN RETURNING PATIENTS
 
 #Νέα περιστατικά
 @app.route('/newCase', methods=['GET','POST'])
@@ -115,8 +115,10 @@ def newPat():
             "contactphone":patientContactPhone
         }
         r = requests.post(host_flask +'/patients', json = newPatient)
-        #TODO CATCH NotUniqueError AMKA
-        return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
+        if r.status_code == "200":
+            return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
+        else:
+             return render_template("newPatient.html", title='Νέος Ασθενής',message="Tο δηλωθέν ΑΜΚΑ υπάρχει ήδη στον κατάλογο ασθενών")
     else:
         return render_template("newPatient.html", title='Νέος Ασθενής')
 

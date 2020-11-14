@@ -1,3 +1,9 @@
+/* global settings */
+body {
+  background-color:#cfe0e8;
+  font-family: 'Roboto', sans-serif;
+}
+
 
  /* navigation menu styles */
 
@@ -6,7 +12,7 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #333;
+    background-color:#87bdd8;
   }
   
   li {
@@ -23,7 +29,42 @@ ul {
   
   /* Change the link color to #111 (black) on hover */
   li a:hover {
-    background-color: #111;
+    background-color:#b7d7e8;
   }
 
+  /* table styles */
+  .table-comp {
+    text-align: center;
+    width: 100%;
+    border-collapse: collapse;
+  }
   
+  td{
+    padding: 10px;
+    border-bottom: 3px #87bdd8;
+  }
+
+  th {
+    background-color:#87bdd8;
+    color: rgb(255, 255, 255);
+    padding: 10px;
+  }
+
+  tr {
+    background-color: #b7d7e8;
+    padding: 10px;
+  }
+
+  tr:nth-child(even) {
+    background-color:#daebe8;
+    padding: 10px;
+
+  }
+
+  /* buttons */
+  .button-class {
+    background-color:#cfe0e8;
+    border: 3px solid #87bdd8;
+    border-radius: 8px;
+    padding: 10px 10px;
+  }

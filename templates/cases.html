@@ -1,11 +1,11 @@
 
 {% extends "layout.html" %}
 {% block content %}
-  <div class="home">
+  <div>
     <h1>ΕΝΕΡΓΑ ΠΕΡΙΣΤΑΤΙΚΑ</h1>
     <p></p>
-    <a href="/newCase"><button>Νέο Περιστατικό</button></a>
-        <table style="width:100%">
+    <a href="/newCase"><button class="button-class">Νέο Περιστατικό</button></a>
+        <table class="table-comp">
             <tr>
                 <th>Ασθενής</th>
                 <th>Δωμάτιο</th>
@@ -21,7 +21,7 @@
                 <td>{{case.bedn}}</td>
                 <td>{{case.doctor}}</td>
                 <td>{{case.covidStatus}}</td>
-                <td><a href="/casedetails?id={{case.id}}"><button>Επεξεργασία περιστατικού</button></a></td>
+                <td><a href="/casedetails?id={{case.id}}"><button class="button-class" ><i class="fas fa-edit"></i></button></a></td>
             </tr>
         {% endfor %}
         </table>
