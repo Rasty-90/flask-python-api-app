@@ -2,29 +2,27 @@
 {% block content %}
 <script src="{{url_for('static', filename='scripts.js')}}"></script>
 <div>
-    <h1>ΠΛΗΡΟΦΟΡΙΕΣ ΠΕΡΙΣΤΑΤΙΚΟΥ</h1></p>
-    <form method="post" action="/casedetails?id={{case.id}}">
-
+    <form method="post" class="form-class" action="/casedetails?id={{case.id}}">
+    <p class="title-top">ΠΛΗΡΟΦΟΡΙΕΣ ΠΕΡΙΣΤΑΤΙΚΟΥ</p>
     <label for="patient">Ασθενής:</label>
-    <select id="patient" name="patient">
-      <option value="{{case.patientID}}">{{case.patientID}}</option>
+    <select class="textbox-form" id="patient" name="patient">
+      <option value="{{case.patientID}}">{{patientcase.surname}} {{patientcase.name}} (ΑΜΚΑ: {{patientcase.amka}})</option>
         {% for patient in patients %}
-      <option value="{{patient.id}}">{{patient.surname}} {{patient.name}}</option>
+      <option value="{{patient.id}}">{{patient.surname}} {{patient.name}} (ΑΜΚΑ: {{patient.amka}})</option>
       {% endfor %}
     </select>
-    <p>Σε περίπτωση νέου ασθενή ανοίγετε πρώτα <a href="/newPatient">καρτέλα ασθενούς</a></p>
-    <p>Δωμάτιο:<input type='text' name="roomn" value={{case.roomn}}></input></p>
-    <p>Κλίνη:<input type='text' name="bedn" value={{case.bedn}}></input></p>
-    <p>Υπεύθυνος Ιατρός:<input type='text' name="doctor" value={{case.doctor}}></input></p>
+    <p class="notification">Σε περίπτωση νέου ασθενή ανοίγετε πρώτα <a href="/newPatient">καρτέλα ασθενούς</a></p>
+    <p>Δωμάτιο:<input class="textbox-form" type='text' name="roomn" value={{case.roomn}}></input> Κλίνη:<input class="textbox-form" type='text' name="bedn" value={{case.bedn}}></input></p>
+    <p>Υπεύθυνος Ιατρός:<input class="textbox-form" type='text' name="doctor" value="{{case.doctor}}"></input></p>
     <label for="covidStatus">Covid Test:</label>
-    <select id="covidStatus" name="covidStatus">
+    <select class="textbox-form" id="covidStatus" name="covidStatus">
       <option value="Θετικό">Θετικό</option>
       <option value="Αρνητικό">Αρνητικό</option>
       <option value="Αδιευκρίνιστο">Αδιευκρίνιστο</option>
     </select>
     <p></p>
-    <input type="submit" value="edit" name="submit"/>
-    <input type="submit" value="delete" name="submit"/>
+    <input class="button-class" type="submit" value="edit" name="submit"/>
+    <input class="button-class" type="submit" value="delete" name="submit"/>
     </form>
 
 </div>

@@ -2,13 +2,13 @@
 {% block content %}
 <script src="{{url_for('static', filename='scripts.js')}}"></script>
 <div>
-    <h1>ΠΡΟΣΩΠΙΚΟ ΠΡΟΦΙΛ ΑΣΘΕΝΟΥΣ</h1></p>
-    <form method="post" action="/profile?id={{patient.id}}">
-    <p>Επώνυμο<input type='text' name='patientSurname' value="{{patient.surname}}"></input></p>
-    <p>Όνομα: <input type='text' name='patientName' value="{{patient.name}}"></input></p>
-    <p>ΑΜΚΑ: <input type='text' name='patientAmka' value="{{patient.amka}}"></input></p>
-    <p>Τηλ. επικοινωνίας: <input type='text' name='patientContactPhone' value="{{patient.contactphone}}"></input></p>
-    <input type="submit" value="edit" name="submit"/>
-    <input type="submit" value="delete" name="submit"/>
+    <form method="post" class="form-class" action="/profile?id={{patient.id}}">
+    <p class="title-top">ΠΡΟΣΩΠΙΚΟ ΠΡΟΦΙΛ ΑΣΘΕΝΟΥΣ</p>
+    <p>Επώνυμο: <input class="textbox-form" type='text' name='patientSurname' value="{{patient.surname}}"></input></p>
+    <p>Όνομα: <input class="textbox-form" type='text' name='patientName' value="{{patient.name}}"></input></p>
+    <p>ΑΜΚΑ: <input class="textbox-form" type='text' name='patientAmka' value="{{patient.amka}}"></input></p>
+    <p>Τηλ. επικοινωνίας: <input class="textbox-form" type='text' name='patientContactPhone' value="{{patient.contactphone}}"></input></p>
+    <input class="button-class" type="submit" value="edit" name="submit"/>
+    <input class="button-class" type="submit" value="delete" name="submit"/>
 </div>
 {% endblock %}
