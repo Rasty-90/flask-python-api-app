@@ -119,7 +119,6 @@ def newPat():
             "contactphone":patientContactPhone
         }
         r = requests.post(host_flask +'/patients', json = newPatient)
-        print(r.status_code)
         if r.status_code == 200:
             return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
         else:
@@ -150,7 +149,10 @@ def patprof():
                 "contactphone":patientContactPhone
             }
             r = requests.put(host_flask +'/patient/'+id, json = newPatient)
-            return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
+            if  r.status_code == 200: 
+                return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
+            else: 
+                 return render_template("profiledetails.html", title='Προφίλ ασθενούς', patient=dicts, message="Tο δηλωθέν ΑΜΚΑ υπάρχει ήδη στον κατάλογο ασθενών")
         elif request.form['submit'] == 'delete':
              r = requests.delete(host_flask +'/patient/'+id)
              #TODO: MESSAGE FOR DELETING
@@ -159,8 +161,6 @@ def patprof():
             return "Εμφανίστηκε σφάλμα στην εφαρμογή"
     else:  
         return render_template("profiledetails.html", title='Προφίλ ασθενούς', patient=dicts)
-
-
 
 
 app.run(debug=True, host = host_flask_app, port=host_flask_app_port)

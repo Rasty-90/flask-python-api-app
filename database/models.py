@@ -14,7 +14,7 @@ class Patient(gj.Document):
     contactphone=db.StringField(required=True)
 
 class Case(gj.Document):
-    patientID=db.ObjectIdField(required=True)
+    patientID=db.ObjectIdField(required=True,unique=True)
     roomn=db.StringField(required=True)
     bedn=db.StringField(required=True)
     doctor=db.StringField(required=True)

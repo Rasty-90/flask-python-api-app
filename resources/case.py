@@ -1,6 +1,6 @@
 from flask import Response, request
 from database.models import Case
-from flask_restful import Resource
+from flask_restful import Resource,request
 import json
 
 """
@@ -13,7 +13,7 @@ class CasesApi(Resource):
     This function gets all the Case objects from the database
     """
     def get(self):
-        cases = Case.objects().to_json()
+        cases = Case.objects.to_json()
         #creates a dictionary over the Mongo Object so that it can be parsed
         #as a json file from the rest of the program
         dicts = json.loads(cases)
@@ -29,7 +29,7 @@ class CasesApi(Resource):
         return "",200
 
 """
-the caseApi uses an id (or status) input as an additional resource, so it differs from the casesApi, thus
+the caseApi uses an id (or status) input as an additional resource refering to a single db index, so it differs from the casesApi, thus
 requiring a different class
 """
 class CaseApi(Resource):

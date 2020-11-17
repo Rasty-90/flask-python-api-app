@@ -44,9 +44,14 @@ class PatientApi(Resource):
     """
     def put(self,id):
         body = request.get_json()
-        Patient.objects.get(id=id).update(**body)
-        return 'Success',200
-
+        try:
+            Patient.objects.get(id=id).update(**body)
+        #handles the NotUniqueError in case the user tries to create an index
+        #with an already existing unique field(AMKA)
+        except (NotUniqueError):
+            return "",403
+        return "",200
+        
     """
     This function deletes a specific index from the db, based on the id given
     """
