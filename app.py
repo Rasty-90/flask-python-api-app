@@ -64,8 +64,12 @@ def caseDets():
     id = id=request.args.get('id')
     reqres = requests.get(host_flask +'/case/'+id)
     dicts = json.loads(reqres.content)
+    print (dicts)
     patientsres = requests.get(host_flask +'/patients')
     patients = json.loads(patientsres.content)
+
+    patientres=requests.get(host_flask +'/patient/'+dicts['patientID'])
+    patient =json.loads(patientres.content)
     #Εάν χρησιμοποιηθεί η φόρμα 
     if request.method == 'POST':
         if request.form['submit'] == 'edit':
@@ -89,7 +93,7 @@ def caseDets():
         else:
             return "εμφανίστηκε σφάλμα"
     else:        
-        return render_template("casedetails.html", title='Προφίλ ασθενούς', case=dicts, patients=patients)
+        return render_template("casedetails.html", title='Προφίλ ασθενούς', case=dicts, patients=patients, patientcase=patient)
 
 #Routes για τις σελίδες των ασθενών
 @app.route('/indexpatients')
@@ -115,10 +119,11 @@ def newPat():
             "contactphone":patientContactPhone
         }
         r = requests.post(host_flask +'/patients', json = newPatient)
-        if r.status_code == "200":
+        print(r.status_code)
+        if r.status_code == 200:
             return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
         else:
-             return render_template("newPatient.html", title='Νέος Ασθενής',message="Tο δηλωθέν ΑΜΚΑ υπάρχει ήδη στον κατάλογο ασθενών")
+            return render_template("newPatient.html", title='Νέος Ασθενής',message="Tο δηλωθέν ΑΜΚΑ υπάρχει ήδη στον κατάλογο ασθενών")         
     else:
         return render_template("newPatient.html", title='Νέος Ασθενής')
 

@@ -2,27 +2,26 @@
 {% block content %}
 <script src="{{url_for('static', filename='scripts.js')}}"></script>
 <div>
-    <h1>ΝΕΟ ΠΕΡΙΣΤΑΤΙΚΟ</h1></p>
-    <form method="post" action="/newCase">
-
+    
+    <form class="form-class" method="post" action="/newCase">
+    <p class="title-top">ΝΕΟ ΠΕΡΙΣΤΑΤΙΚΟ</p>
     <label for="patient">Επιλέξτε ασθενή:</label>
-    <select id="patient" name="patient">
+    <select class="textbox-form" id="patient" name="patient">
         {% for patient in patients %}
-      <option value="{{patient.id}}">{{patient.surname}} {{patient.name}} (ΑΜΚΑ: {{patient.amka}}}</option>
+      <option value="{{patient.id}}">{{patient.surname}} {{patient.name}} (ΑΜΚΑ: {{patient.amka}})</option>
       {% endfor %}
     </select>
-    <p>Σε περίπτωση νέου ασθενή ανοίγετε πρώτα <a href="/newPatient">καρτέλα ασθενούς</a></p>
-    <p>Δωμάτιο:<input type='text' name="roomn"></input></p>
-    <p>Κλίνη:<input type='text' name="bedn"></input></p>
-    <p>Υπεύθυνος Ιατρός:<input type='text' name="doctor"></input></p>
+    <p class="notification">Σε περίπτωση νέου ασθενή ανοίγετε πρώτα <a href="/newPatient">καρτέλα ασθενούς</a></p>
+    <p>Δωμάτιο:<input type='text' class="textbox-form" name="roomn"></input> Κλίνη:<input type='text' class="textbox-form" name="bedn"></input></p>
+    <p>Υπεύθυνος Ιατρός:<input type='text' class="textbox-form" name="doctor"></input></p>
     <label for="covidStatus">Covid Test:</label>
-    <select id="covidStatus" name="covidStatus">
+    <select id="covidStatus" class="textbox-form" name="covidStatus">
       <option value="Θετικό">Θετικό</option>
       <option value="Αρνητικό">Αρνητικό</option>
       <option value="Αδιευκρίνιστο">Αδιευκρίνιστο</option>
     </select>
-    <p>*Όλα τα νέα περιστατικά δημιουργούνται αυτομάτως ως ενεργά</p>
-    <input type="submit" name="sumbit" value="Καταχώριση εγγραφής"/>
+    <p class="notification" >*Όλα τα νέα περιστατικά δημιουργούνται αυτομάτως ως ενεργά</p>
+    <input type="submit" class="button-class" name="sumbit" value="Καταχώριση εγγραφής"/>
     </form>
 
 </div>
