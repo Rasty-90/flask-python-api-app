@@ -1,7 +1,7 @@
 from flask import Response, request
 from database.models import Patient
 from flask_restful import Resource
-from mongoengine.errors import NotUniqueError
+from mongoengine.errors import NotUniqueError,OperationError
 import json
 
 """
@@ -31,7 +31,11 @@ class PatientsApi(Resource):
         #handles the NotUniqueError in case the user tries to create an index
         #with an already existing unique field(AMKA)
         except (NotUniqueError):
-            return "",403
+            return "",131
+        #handles the OperationError in case the user tries to create an index that doesn't comply with
+        #the db validation rules
+        except(OperationError):
+            return "",121
         return "",200
 
 """
@@ -49,7 +53,9 @@ class PatientApi(Resource):
         #handles the NotUniqueError in case the user tries to create an index
         #with an already existing unique field(AMKA)
         except (NotUniqueError):
-            return "",403
+            return "",131
+        except(OperationError):
+            return "",121
         return "",200
         
     """

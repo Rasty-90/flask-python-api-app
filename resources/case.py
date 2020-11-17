@@ -1,7 +1,7 @@
 from flask import Response, request
 from database.models import Case
 from flask_restful import Resource,request
-from mongoengine.errors import NotUniqueError
+from mongoengine.errors import NotUniqueError,OperationError
 import json
 
 """
