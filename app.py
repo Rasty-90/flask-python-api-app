@@ -53,7 +53,10 @@ def newCase():
                 "covidStatus":covidStatus
             }
         r = requests.post(host_flask +'/cases', json = newCase)
-        return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
+        if r.status_code == 200:
+            return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
+        else:
+            return render_template("newCase.html", title='Νέο περιστατικό',patients=patients,message="Yπάρχει ήδη ενεργό περιστατικό σχετιζόμενο με τον ασθενή")
     else:    
         return render_template("newCase.html", title='Νέο περιστατικό',patients=patients)
 

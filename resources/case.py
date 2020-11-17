@@ -1,6 +1,7 @@
 from flask import Response, request
 from database.models import Case
 from flask_restful import Resource,request
+from mongoengine.errors import NotUniqueError
 import json
 
 """
@@ -24,9 +25,14 @@ class CasesApi(Resource):
     """
     def post(self):
         body = request.get_json()
-        #** spreads the object
-        case= Case(**body).save()
-        return "",200
+        try:
+            #** spreads the object
+            case= Case(**body).save()
+        #handles the NotUniqueError in case the user tries to create an index
+        #with an already existing unique field(AMKA)
+        except (NotUniqueError):
+            return "",403
+        return '',200
 
 """
 the caseApi uses an id (or status) input as an additional resource refering to a single db index, so it differs from the casesApi, thus
@@ -38,7 +44,12 @@ class CaseApi(Resource):
     """
     def put(self,id):
         body = request.get_json()
-        Case.objects.get(id=id).update(**body)
+        try:
+            Case.objects.get(id=id).update(**body)
+        #handles the NotUniqueError in case the user tries to create an index
+        #with an already existing unique field(AMKA)
+        except (NotUniqueError):
+            return "",403
         return '',200
 
     """
