@@ -20,10 +20,11 @@
       <option value="Αρνητικό">Αρνητικό</option>
       <option value="Αδιευκρίνιστο">Αδιευκρίνιστο</option>
     </select>
-    <p></p>
+    <p class="alert-message">{{message}}</p>
     <button class="button-class" type="submit" value="edit" name="submit">Επεξεργασία</button>
-    <button class="button-class" type="submit" value="delete" name="submit">Διαγραφή</button>
+    <button class="button-class" type="submit" value="delete" onclick="goConf()" name="submit">Διαγραφή</button>
     </form>
+    <button class="button-class" type="submit" value="mip" onclick="goConf()" name="mip">Διαγραφή</button>
 
 </div>
 {% endblock %}

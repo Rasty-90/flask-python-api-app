@@ -69,16 +69,19 @@ def newCase():
         r = requests.post(host_flask +'/cases', json = newCase)
         #check the status code of the response r, and presents the relative message, in case of error. Status codes are 
         #defined in the resources/case for each endpoint
-        if r.status_code == 200:
-            return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
-        else:
+        if r.status_code == 131:
             return render_template("newCase.html", title='Νέο περιστατικό',patients=patients,message="Yπάρχει ήδη ενεργό περιστατικό σχετιζόμενο με τον ασθενή")
+        elif r.status_code==121:
+            return render_template("newCase.html", title='Νέο περιστατικό',patients=patients,
+            message="Παρουσιάστηκε σφάλμα στην εισαγωγή των στοιχείων, παρακαλώ ελέξτε ότι όλα τα πεδία είναι συμπληρωμένα και με σωστό τρόπο")
+        else:
+            return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
     else:
-        #result if the form isnt used (which is the default behavior upon opening the page)
+        #result if the form isn't used (which is the default behavior upon opening the page)
         return render_template("newCase.html", title='Νέο περιστατικό',patients=patients)
 
 #Edit/delete case
-@app.route('/casedetails', methods=['GET','POST'])
+@app.route('/casedetails', methods=['GET','POST','DELETE'])
 def caseDets():
     #gets the id of the case provided in the URL to fill the form with its data
     id = id=request.args.get('id')
@@ -107,16 +110,26 @@ def caseDets():
                 "covidStatus":covidStatus
             }
             r = requests.put(host_flask +'/case/'+id, json = case)
-            return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
-
-        elif request.form['submit'] == 'delete':
-            r = requests.delete(host_flask +'/case/'+id)
-            return render_template("message.html", title='Επιτυχής διαγραφή', message="H διαγραφή ολοκληρώθηκε με επιτυχία")   
-        #TODO: COMMENTS    
+            #check the status code of the response r, and presents the relative message, in case of error. Status codes are 
+            #defined in the resources/case for each endpoint
+            if r.status_code == 131:
+                return render_template("casedetails.html", title='Επεξεργασία Περιστατικού',case=dicts, patients=patients, patientcase=patient,
+                message="Yπάρχει ήδη ενεργό περιστατικό σχετιζόμενο με τον ασθενή")
+            elif r.status_code==121:
+                return render_template("casedetails.html", title='Επεξεργασία Περιστατικού',case=dicts, patients=patients, patientcase=patient,
+            message="Παρουσιάστηκε σφάλμα στην εισαγωγή των στοιχείων, παρακαλώ ελέξτε ότι όλα τα πεδία είναι συμπληρωμένα και με σωστό τρόπο")
+            else:
+                return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
         else:
+            #general error 
             return "εμφανίστηκε σφάλμα"
-    else:        
-        return render_template("casedetails.html", title='Προφίλ ασθενούς', case=dicts, patients=patients, patientcase=patient)
+    #the DELETE request is handled by the js file, in order to function through a comfirmation check
+    elif request.method=='DELETE':
+        r = requests.delete(host_flask +'/case/'+id)
+        return render_template("message.html", title='Επιτυχής διαγραφή', message="H διαγραφή ολοκληρώθηκε με επιτυχία")
+    else:
+         #result if the form isn't used (which is the default behavior upon opening the page)        
+        return render_template("casedetails.html", title='Επεξεργασία Περιστατικού', case=dicts, patients=patients, patientcase=patient)
 
 
 """
@@ -152,7 +165,8 @@ def newPat():
             #defined in the resources/patient for each endpoint
             return render_template("newPatient.html", title='Νέος Ασθενής',message="Tο δηλωθέν ΑΜΚΑ υπάρχει ήδη στον κατάλογο ασθενών")
         elif r.status_code == 121:
-            return render_template("newPatient.html", title='Νέος Ασθενής',message="Τα δηλωθέντα στοιχεία δεν είναι ακριβή")
+            return render_template("newPatient.html", title='Νέος Ασθενής',
+            message="Παρουσιάστηκε σφάλμα στην εισαγωγή των στοιχείων, παρακαλώ ελέξτε ότι όλα τα πεδία είναι συμπληρωμένα και με σωστό τρόπο")
         else:
             return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")           
     else:
@@ -185,15 +199,17 @@ def patprof():
             #check the status code of the response r, and presents the relative message, in case of error. Status codes are 
             #defined in the resources/patient for each endpoint
             if  r.status_code == 121: 
-                return render_template("profiledetails.html", title='Προφίλ ασθενούς', patient=dicts, message="Τα δηλωθέντα στοιχεία δεν είναι ακριβή")
+                return render_template("profiledetails.html", title='Προφίλ ασθενούς', patient=dicts,
+                 message="Παρουσιάστηκε σφάλμα στην εισαγωγή των στοιχείων, παρακαλώ ελέξτε ότι όλα τα πεδία είναι συμπληρωμένα και με σωστό τρόπο")
             elif r.status_code == 131:
                 return render_template("profiledetails.html", title='Προφίλ ασθενούς', patient=dicts, message="Tο δηλωθέν ΑΜΚΑ υπάρχει ήδη στον κατάλογο ασθενών")
             else:
                  return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
         elif request.form['submit'] == 'delete':
-             r = requests.delete(host_flask +'/patient/'+id)
-             #TODO: MESSAGE FOR DELETING
-             return render_template("message.html", title='Επιτυχής διαγραφή', message="H διαγραφή ολοκληρώθηκε με επιτυχία")
+            a=1+1
+            #  r = requests.delete(host_flask +'/patient/'+id)
+            #  #TODO: MESSAGE FOR DELETING
+            #  return render_template("message.html", title='Επιτυχής διαγραφή', message="H διαγραφή ολοκληρώθηκε με επιτυχία")
         else:
             return "Εμφανίστηκε σφάλμα στην εφαρμογή"
     else:  
