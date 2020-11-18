@@ -208,6 +208,7 @@ def patprof():
         else:
             return "Εμφανίστηκε σφάλμα στην εφαρμογή"
     elif request.method=='DELETE':
+        #the DELETE request is handled by the js file, in order to function through a comfirmation check
         r = requests.delete(host_flask +'/patient/'+id)
         return render_template("message.html", title='Επιτυχής διαγραφή', message="H διαγραφή ολοκληρώθηκε με επιτυχία")  
     else:  
