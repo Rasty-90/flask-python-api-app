@@ -69,15 +69,12 @@ ul {
     border: 3px solid #87bdd8;
     border-radius: 8px;
     padding: 10px 10px;
+    margin: 8px;
   }
 
   .button-class:hover {
     background-color:  #87bdd8; /* Green */
     color: white;
-  }
-
-  .button-float {
-    float: right;
   }
 
   /* form styles */

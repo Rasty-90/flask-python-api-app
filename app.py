@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,flash,session
+from flask import Flask,render_template,request,flash,session,jsonify
 from database.dp import initialize_db
 from flask_restful import Api
 from resources.routes import initialize_routes
@@ -128,7 +128,7 @@ def caseDets():
         r = requests.delete(host_flask +'/case/'+id)
         return render_template("message.html", title='Επιτυχής διαγραφή', message="H διαγραφή ολοκληρώθηκε με επιτυχία")
     else:
-         #result if the form isn't used (which is the default behavior upon opening the page)        
+        #result if the form isn't used (which is the default behavior upon opening the page)        
         return render_template("casedetails.html", title='Επεξεργασία Περιστατικού', case=dicts, patients=patients, patientcase=patient)
 
 
@@ -173,7 +173,7 @@ def newPat():
         return render_template("newPatient.html", title='Νέος Ασθενής')
 
 #Edit/delete patient
-@app.route('/profile',methods=['GET','POST'])
+@app.route('/profile',methods=['GET','POST','DELETE'])
 def patprof():
     #gets the id of the patient provided in the URL to fill the form with its data
     id=request.args.get('id')
@@ -205,13 +205,11 @@ def patprof():
                 return render_template("profiledetails.html", title='Προφίλ ασθενούς', patient=dicts, message="Tο δηλωθέν ΑΜΚΑ υπάρχει ήδη στον κατάλογο ασθενών")
             else:
                  return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
-        elif request.form['submit'] == 'delete':
-            a=1+1
-            #  r = requests.delete(host_flask +'/patient/'+id)
-            #  #TODO: MESSAGE FOR DELETING
-            #  return render_template("message.html", title='Επιτυχής διαγραφή', message="H διαγραφή ολοκληρώθηκε με επιτυχία")
         else:
             return "Εμφανίστηκε σφάλμα στην εφαρμογή"
+    elif request.method=='DELETE':
+        r = requests.delete(host_flask +'/patient/'+id)
+        return render_template("message.html", title='Επιτυχής διαγραφή', message="H διαγραφή ολοκληρώθηκε με επιτυχία")  
     else:  
         return render_template("profiledetails.html", title='Προφίλ ασθενούς', patient=dicts)
 

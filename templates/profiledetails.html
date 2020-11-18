@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
 <script src="{{url_for('static', filename='scripts.js')}}"></script>
-<div>
-    <form method="post" class="form-class" action="/profile?id={{patient.id}}">
+<div class="form-class">
+    <form method="post"  action="/profile?id={{patient.id}}">
     <p class="title-top">ΠΡΟΣΩΠΙΚΟ ΠΡΟΦΙΛ ΑΣΘΕΝΟΥΣ</p>
     <p>Επώνυμο: <input class="textbox-form" type='text' name='patientSurname' value="{{patient.surname}}"></input></p>
     <p>Όνομα: <input class="textbox-form" type='text' name='patientName' value="{{patient.name}}"></input></p>
@@ -10,6 +10,7 @@
     <p>Τηλ. επικοινωνίας: <input class="textbox-form" type='text' name='patientContactPhone' value="{{patient.contactphone}}"></input></p>
     <p class="alert-message">{{message}}</p>
     <button class="button-class" type="submit" value="edit" name="submit">Επεξεργασία</button>
-    <button class="button-class" type="submit" value="delete" name="submit">Διαγραφή</button>
+    </form>
+    <button class="button-class" onclick="patDelConf()">Διαγραφή</button>
 </div>
 {% endblock %}
