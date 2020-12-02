@@ -2,16 +2,20 @@
 {% extends "layout.html" %}
 {% block content %}
   <div>
-    <div>
-        <p class="title-top">ΕΝΕΡΓΑ ΠΕΡΙΣΤΑΤΙΚΑ</p>
-        <a href="/newCase"><button class="button-class">Νέο Περιστατικό</button></a>
-    </div>
+    <p class="title-top">ΕΝΕΡΓΑ ΠΕΡΙΣΤΑΤΙΚΑ</p>
+    <p></p>
+    <form action="/searchPatients?page=case" method="post"class="float-left">
+        Αναζήτηση με επίθετο ασθενούς/AMKA: <input type="text" placeholder="{{searchPh}}" name="search" class="textbox-form">
+        <button type="submit" class="button-class"><i class="fas fa-search"></i></i></button>
+        </form>
+        <a href="/newCase"><button class="button-class float-right">Νέο Περιστατικό</button></a>
         <table class="table-comp">
             <tr>
                 <th>Ασθενής</th>
                 <th>Δωμάτιο</th>
                 <th>Κλίνη</th>
                 <th>Υπεύθυνος Ιατρός</th>
+                <th>Ημερομηνία</th>
                 <th>Covid Test</th>
                 <th></th>
             </tr>
@@ -21,6 +25,7 @@
                 <td>{{case.roomn}}</td>
                 <td>{{case.bedn}}</td>
                 <td>{{case.doctor}}</td>
+                <td>{{case.date}}</td>
                 <td>{{case.covidStatus}}</td>
                 <td><a href="/casedetails?id={{case.id}}"><button class="button-class" ><i class="fas fa-edit"></i></button></a></td>
             </tr>

@@ -13,7 +13,7 @@
     </select>
     <p class="notification">Σε περίπτωση νέου ασθενή ανοίγετε πρώτα <a href="/newPatient">καρτέλα ασθενούς</a></p>
     <p>Δωμάτιο:<input class="textbox-form" type='text' name="roomn" value={{case.roomn}}></input> Κλίνη:<input class="textbox-form" type='text' name="bedn" value={{case.bedn}}></input></p>
-    <p>Υπεύθυνος Ιατρός:<input class="textbox-form" type='text' name="doctor" value="{{case.doctor}}"></input></p>
+    <p>Υπεύθυνος Ιατρός:<input class="textbox-form" type='text' name="doctor" value="{{case.doctor}}"></input> Ημ. εισαγωγής: <input type="date" name="date" value="{{case.date}}" class="textbox-form" min="2020-01-01" max="2021-12-31"></p>
     <label for="covidStatus">Covid Test:</label>
     <select class="textbox-form" id="covidStatus" name="covidStatus">
       <option value="Θετικό">Θετικό</option>
@@ -23,7 +23,7 @@
     <p class="alert-message">{{message}}</p>
     <button class="button-class" type="submit" value="edit" name="submit">Επεξεργασία</button>
     </form>
-    <button class="button-class" onclick="caseDelConf()">Διαγραφή</button>
+    <button class="button-class" onclick="caseDelConf()">Διαγραφή</button> <a href="/indexcases"><button class="button-class">Ακύρωση</button></a>
 </div>
 {% endblock %}
 

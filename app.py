@@ -6,6 +6,7 @@ from config import host_db,host_flask,host_flask_app,host_flask_app_port
 import requests
 import json
 from mongoengine.errors import NotUniqueError
+from datetime import datetime
 
 """
 The first part of this file handles the initialization of the database,
@@ -43,6 +44,8 @@ def indexcases():
         patientCase = json.loads(patientCaseRes.content)
         case['patientSurname']=patientCase['surname']
         case['patientName']=patientCase['name']
+        #changes the date to dd-mm-yyyy format
+        case['date']=formatDate(case['date'])
     return render_template("cases.html", title='Περιστατικά', cases=cases)
 
 
@@ -59,19 +62,19 @@ def newCase():
         bedn = request.form['bedn']
         doctor = request.form['doctor']
         covidStatus = request.form['covidStatus']
+        date = request.form['date']
         newCase = {
                 "patientID": patientID,
                 "roomn": roomn,
                 "bedn": bedn,
                 "doctor": doctor,
-                "covidStatus":covidStatus
+                "covidStatus":covidStatus,
+                "date":date
             }
         r = requests.post(host_flask +'/cases', json = newCase)
         #check the status code of the response r, and presents the relative message, in case of error. Status codes are 
         #defined in the resources/case for each endpoint
-        if r.status_code == 131:
-            return render_template("newCase.html", title='Νέο περιστατικό',patients=patients,message="Yπάρχει ήδη ενεργό περιστατικό σχετιζόμενο με τον ασθενή")
-        elif r.status_code==121:
+        if r.status_code==121:
             return render_template("newCase.html", title='Νέο περιστατικό',patients=patients,
             message="Παρουσιάστηκε σφάλμα στην εισαγωγή των στοιχείων, παρακαλώ ελέξτε ότι όλα τα πεδία είναι συμπληρωμένα και με σωστό τρόπο")
         else:
@@ -84,14 +87,14 @@ def newCase():
 @app.route('/casedetails', methods=['GET','POST','DELETE'])
 def caseDets():
     #gets the id of the case provided in the URL to fill the form with its data
-    id = id=request.args.get('id')
+    id=request.args.get('id')
     reqres = requests.get(host_flask +'/case/'+id)
-    dicts = json.loads(reqres.content)
+    caseres = json.loads(reqres.content)
     #gets the patient name, surname and amka for each case in order to be presented to the front end
     patientsres = requests.get(host_flask +'/patients')
     patients = json.loads(patientsres.content)
     #gets the patient who is associated with the specific case
-    patientres=requests.get(host_flask +'/patient/'+dicts['patientID'])
+    patientres=requests.get(host_flask +'/patient/'+caseres['patientID'])
     patient =json.loads(patientres.content)
     #checks if the form is used
     if request.method == 'POST':
@@ -102,20 +105,19 @@ def caseDets():
             bedn = request.form['bedn']
             doctor = request.form['doctor']
             covidStatus=request.form['covidStatus']
+            date=request.form['date']
             case = {
                 "patientID":patientID,
                 "roomn":roomn,
                 "bedn":bedn,
                 "doctor":doctor,
-                "covidStatus":covidStatus
+                "covidStatus":covidStatus,
+                "date":date
             }
             r = requests.put(host_flask +'/case/'+id, json = case)
             #check the status code of the response r, and presents the relative message, in case of error. Status codes are 
             #defined in the resources/case for each endpoint
-            if r.status_code == 131:
-                return render_template("casedetails.html", title='Επεξεργασία Περιστατικού',case=dicts, patients=patients, patientcase=patient,
-                message="Yπάρχει ήδη ενεργό περιστατικό σχετιζόμενο με τον ασθενή")
-            elif r.status_code==121:
+            if r.status_code==121:
                 return render_template("casedetails.html", title='Επεξεργασία Περιστατικού',case=dicts, patients=patients, patientcase=patient,
             message="Παρουσιάστηκε σφάλμα στην εισαγωγή των στοιχείων, παρακαλώ ελέξτε ότι όλα τα πεδία είναι συμπληρωμένα και με σωστό τρόπο")
             else:
@@ -128,14 +130,15 @@ def caseDets():
         r = requests.delete(host_flask +'/case/'+id)
         return render_template("message.html", title='Επιτυχής διαγραφή', message="H διαγραφή ολοκληρώθηκε με επιτυχία")
     else:
-        #result if the form isn't used (which is the default behavior upon opening the page)        
-        return render_template("casedetails.html", title='Επεξεργασία Περιστατικού', case=dicts, patients=patients, patientcase=patient)
+        #result if the form isn't used (which is the default behavior upon opening the page)
+        #converts the date in a format usable by html date input(yyyy-mm-dd)
+        caseres['date'] =datetime.fromisoformat(caseres['date']).date()
+        return render_template("casedetails.html", title='Επεξεργασία Περιστατικού', case=caseres, patients=patients, patientcase=patient)
 
 
 """
 Routes and actions for the pages relates to the patiens
 """
-
 #brings all the patient documents from the db
 @app.route('/indexpatients')
 def indexpatients():
@@ -179,6 +182,12 @@ def patprof():
     id=request.args.get('id')
     reqres = requests.get(host_flask +'/patient/'+id)
     dicts = json.loads(reqres.content)
+    #gets the cases associated with the patient to fill the case table
+    caseres=requests.get(host_flask +'/cases?patientID='+id)
+    casespat=json.loads(caseres.content)
+    #changes the date to dd-mm-yyyy format for each case inside the results
+    for case in casespat:
+        case['date']=formatDate(case['date'])
     #checks if the form is used 
     if request.method == 'POST':
         #checks if edit or delete is pressed
@@ -199,10 +208,10 @@ def patprof():
             #check the status code of the response r, and presents the relative message, in case of error. Status codes are 
             #defined in the resources/patient for each endpoint
             if  r.status_code == 121: 
-                return render_template("profiledetails.html", title='Προφίλ ασθενούς', patient=dicts,
+                return render_template("profiledetails.html", title='Προφίλ ασθενούς', patient=dicts, cases=casespat,
                  message="Παρουσιάστηκε σφάλμα στην εισαγωγή των στοιχείων, παρακαλώ ελέξτε ότι όλα τα πεδία είναι συμπληρωμένα και με σωστό τρόπο")
             elif r.status_code == 131:
-                return render_template("profiledetails.html", title='Προφίλ ασθενούς', patient=dicts, message="Tο δηλωθέν ΑΜΚΑ υπάρχει ήδη στον κατάλογο ασθενών")
+                return render_template("profiledetails.html", title='Προφίλ ασθενούς', patient=dicts, cases=casespat, message="Tο δηλωθέν ΑΜΚΑ υπάρχει ήδη στον κατάλογο ασθενών")
             else:
                  return render_template("message.html", title='Επιτυχής εγγραφή', message="H εγγραφή ολοκληρώθηκε με επιτυχία")
         else:
@@ -212,7 +221,62 @@ def patprof():
         r = requests.delete(host_flask +'/patient/'+id)
         return render_template("message.html", title='Επιτυχής διαγραφή', message="H διαγραφή ολοκληρώθηκε με επιτυχία")  
     else:  
-        return render_template("profiledetails.html", title='Προφίλ ασθενούς', patient=dicts)
+        return render_template("profiledetails.html", title='Προφίλ ασθενούς', patient=dicts, cases=casespat)
+
+"""
+Routing to facilitate the search action. The function handles differently the case of the action
+coming from the patient list page or the case list page
+"""
+
+@app.route('/searchPatients',methods=['GET','POST'])
+def searchPat():
+    #takes the search key from the textbox
+    patientargs=request.form['search']
+    page=request.args.get('page')
+    #empty list for the results
+    patientres = []
+    #first search is based on surname 
+    patientssname = requests.get(host_flask +'/patients?surname='+patientargs)
+    patients = json.loads(patientssname.content)
+    #add the surname search results in the result list
+    for patient in patients:
+        patientres.append(patient)
+    #second search based on amka
+    patientsamka = requests.get(host_flask +'/patients?amka='+patientargs)
+    patients = json.loads(patientsamka.content)
+    #add the amka search results in the result list
+    for patient in patients:
+        patientres.append(patient)
+    #checks if the action comes from the patients or the cases
+    if page=="patients":
+        #we simply return the patients results in the list 
+        return render_template("patients.html", title='Aσθενείς', patients=patientres,searchPh=patientargs)
+    else:
+        #if the action comes for the case page, we need to query the base for cases that belong to the patient/patients
+        #of the results and return them
+        #empty list for the results
+        casesres = []
+        #find the cases related to each patient
+        for patient in patientres:
+            caseres = requests.get(host_flask +'/cases?patientID='+patient['id'])
+            cases = json.loads(caseres.content)
+            for case in cases:
+                #add patient name and surname in order to be displayed on the page
+                case['patientSurname']=patient['surname']
+                case['patientName']=patient['name']
+                #appends each case for each patient to the result list
+                casesres.append(case)
+        return render_template("cases.html", title='Περιστατικά', cases=casesres,searchPh=patientargs)
+         
+"""
+utility functions
+"""
+
+#returns a date formatted in dd-mm-yyyy format
+def formatDate(date):
+    dateres=datetime.fromisoformat(date)
+    return (str(dateres.day)+"/"+str(dateres.month)+"/"+str(dateres.year))
+
 
 
 app.run(debug=True, host = host_flask_app, port=host_flask_app_port)

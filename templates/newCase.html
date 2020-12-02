@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
 {% block content %}
 <script src="{{url_for('static', filename='scripts.js')}}"></script>
-<div>
+<div class="form-class">
     
-    <form class="form-class" method="post" action="/newCase">
+    <form method="post" action="/newCase">
     <p class="title-top">ΝΕΟ ΠΕΡΙΣΤΑΤΙΚΟ</p>
     <label for="patient">Επιλέξτε ασθενή:</label>
     <select class="textbox-form" id="patient" name="patient">
@@ -13,7 +13,7 @@
     </select>
     <p class="notification">Σε περίπτωση νέου ασθενή ανοίγετε πρώτα <a href="/newPatient">καρτέλα ασθενούς</a></p>
     <p>Δωμάτιο:<input type='text' class="textbox-form" name="roomn"></input> Κλίνη:<input type='text' class="textbox-form" name="bedn"></input></p>
-    <p>Υπεύθυνος Ιατρός:<input type='text' class="textbox-form" name="doctor"></input></p>
+    <p>Υπεύθυνος Ιατρός:<input type='text' class="textbox-form" name="doctor"></input> Ημ. εισαγωγής: <input type="date" name="date" class="textbox-form" min="2020-01-01" max="2021-12-31"></p>
     <label for="covidStatus">Covid Test:</label>
     <select id="covidStatus" class="textbox-form" name="covidStatus">
       <option value="Θετικό">Θετικό</option>
@@ -21,9 +21,10 @@
       <option value="Αδιευκρίνιστο">Αδιευκρίνιστο</option>
     </select>
     <p class="alert-message">{{message}}</p>
+    
     <input type="submit" class="button-class" name="sumbit" value="Καταχώριση εγγραφής"/>
     </form>
-
+    <a href="/indexcases"><button class="button-class">Ακύρωση</button></a>
 </div>
 {% endblock %}
 

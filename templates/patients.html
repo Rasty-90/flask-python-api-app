@@ -4,7 +4,11 @@
   <div>
     <p class="title-top">ΚΑΤΑΛΟΓΟΣ ΑΣΘΕΝΩΝ</p>
     <p></p>
-        <a href="/newPatient"><button class="button-class">Νέος ασθενής</button></a>
+    <form action="/searchPatients?page=patients" method="post"class="float-left">
+        Αναζήτηση με επίθετο ασθενούς/AMKA: <input type="text" placeholder="{{searchPh}}" name="search" class="textbox-form">
+        <button type="submit" class="button-class"><i class="fas fa-search"></i></i></button>
+        </form>
+        <a href="/newPatient"><button class="button-class float-right">Νέος ασθενής</button></a>
         <table class="table-comp">
             <tr>
                 <th>Επώνυμο</th>

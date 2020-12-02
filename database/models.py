@@ -16,9 +16,10 @@ class Patient(gj.Document):
     contactphone=db.StringField(required=True,min_length=10,max_length=10)
 
 class Case(gj.Document):
-    patientID=db.ObjectIdField(required=True,unique=True)
+    patientID=db.ObjectIdField(required=True)
     roomn=db.StringField(required=True,min_length=1)
     bedn=db.StringField(required=True,min_length=1)
     doctor=db.StringField(required=True,min_length=1)
     covidStatus=db.StringField(required=True,min_length=1)
+    date = db.DateTimeField(required=True,min_length=1)
 

@@ -14,7 +14,10 @@ class CasesApi(Resource):
     This function gets all the Case objects from the database
     """
     def get(self):
-        cases = Case.objects.to_json()
+        #accepts the arguments for search functionality
+        args = request.args
+        #-date orders the objects by date descending (earlier first)
+        cases = Case.objects.filter(**args).order_by('-date').to_json()
         #creates a dictionary over the Mongo Object so that it can be parsed
         #as a json file from the rest of the program
         dicts = json.loads(cases)
@@ -28,10 +31,6 @@ class CasesApi(Resource):
         try:
             #** spreads the object
             case= Case(**body).save()
-        #handles the NotUniqueError in case the user tries to create an index
-        #with an already existing unique field(AMKA)
-        except (NotUniqueError):
-            return "",131
         except(ValidationError):
             return "",121
         return '',200
@@ -48,10 +47,6 @@ class CaseApi(Resource):
         body = request.get_json()
         try:
             Case.objects.get(id=id).update(**body)
-        #handles the NotUniqueError in case the user tries to create an index
-        #with an already existing unique field(AMKA)
-        except (NotUniqueError):
-            return "",131
         except(ValidationError):
             return "",121
         return '',200
@@ -72,5 +67,3 @@ class CaseApi(Resource):
         #as a json file from the rest of the program
         dicts = json.loads(case)
         return Response(case, mimetype="application/json", status=200)
-
-#TODO: STATUS RESOURCE

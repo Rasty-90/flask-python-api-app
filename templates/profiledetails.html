@@ -12,5 +12,26 @@
     <button class="button-class" type="submit" value="edit" name="submit">Επεξεργασία</button>
     </form>
     <button class="button-class" onclick="patDelConf()">Διαγραφή</button>
+    <p class="title-top">ΠΕΡΙΣΤΑΤΙΚΑ ΑΣΘΕΝΟΥΣ</p>
+    <table class="table-comp">
+        <tr>
+            <th>Δωμάτιο</th>
+            <th>Κλίνη</th>
+            <th>Υπεύθυνος Ιατρός</th>
+            <th>Ημερομηνία</th>
+            <th>Covid Test</th>
+            <th></th>
+        </tr>
+        {% for case in cases %}
+        <tr>
+            <td>{{case.roomn}}</td>
+            <td>{{case.bedn}}</td>
+            <td>{{case.doctor}}</td>
+            <td>{{case.date}}</td>
+            <td>{{case.covidStatus}}</td>
+            <td><a href="/casedetails?id={{case.id}}"><button class="button-class" ><i class="fas fa-edit"></i></button></a></td>
+        </tr>
+        {% endfor %}
+    </table>
 </div>
 {% endblock %}
