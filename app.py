@@ -266,6 +266,7 @@ def searchPat():
                 case['patientName']=patient['name']
                 #appends each case for each patient to the result list
                 casesres.append(case)
+                case['date']=formatDate(case['date'])
         return render_template("cases.html", title='Περιστατικά', cases=casesres,searchPh=patientargs)
          
 """

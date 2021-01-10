@@ -1,15 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}
 <script src="{{url_for('static', filename='scripts.js')}}"></script>
-<div>
+<div class="form-class">
     
-    <form  class="form-class" method="post" action="/newPatient">
+    <form  method="post" action="/newPatient">
     <p class="title-top">ΝΕΟΣ ΑΣΘΕΝΗΣ</p>
     <p>Επώνυμο: <input class="textbox-form" type='text' name="patientSurname"> </input> Όνομα: <input class="textbox-form" type='text' name="patientName"></input></p>
     <p>ΑΜΚΑ: <input class="textbox-form" type='text' name="patientAmka"></input> Τηλ. επικοινωνίας: <input class="textbox-form" type='text' name="patientContactPhone"></input></p>
     <p class="alert-message">{{message}}</p>
     <input type="submit" class="button-class" name="sumbit" value="Καταχώριση εγγραφής"/>
     </form>
-
+    <a href="/indexpatients"><button class="button-class">Ακύρωση</button></a>
 </div>
 {% endblock %}
