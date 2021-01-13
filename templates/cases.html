@@ -8,7 +8,7 @@
         Αναζήτηση με επίθετο ασθενούς/AMKA: <input type="text" placeholder="{{searchPh}}" name="search" class="textbox-form">
         <button type="submit" class="button-class"><i class="fas fa-search"></i></i></button>
         </form>
-        <a href="/newCase"><button class="button-class float-right">Νέο Περιστατικό</button></a>
+        <a href="/newCase"><button class="button-class button-un float-right">Νέο Περιστατικό</button></a>
         <table class="table-comp">
             <tr>
                 <th>Ασθενής</th>
@@ -17,6 +17,7 @@
                 <th>Υπεύθυνος Ιατρός</th>
                 <th>Ημερομηνία</th>
                 <th>Covid Test</th>
+                <th>Είδος Test</th>
                 <th></th>
             </tr>
             {% for case in cases %}
@@ -27,6 +28,7 @@
                 <td>{{case.doctor}}</td>
                 <td>{{case.date}}</td>
                 <td>{{case.covidStatus}}</td>
+                <td>{{case.testType}}</td>
                 <td><a href="/casedetails?id={{case.id}}"><button class="button-class" ><i class="fas fa-edit"></i></button></a></td>
             </tr>
         {% endfor %}

@@ -1,4 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 <p> {{message}}</p>
+<script type="text/javascript">
+    myVar = getRole({{role|tojson}})
+ </script>
 {% endblock %}

@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<div class="form-class">
+		<form action="/login"  method="post">
+			<p class="title-top">ΣΥΝΔΕΣΗ ΧΡΗΣΤΗ</p>
+			<p>Όνομα χρήστη: <input type='text' class="textbox-form" name="username"></input> 
+			<p>Συνθηματικό: <input type='password' class="textbox-form" name="password"></input> 
+			<p class="alert-message">{{message}}</p>
+			<input type="submit" class="button-class" name="sumbit" value="Σύνδεση"/>
+		</form>
+	</div>
+
+{% endblock %}

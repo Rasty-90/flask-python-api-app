@@ -8,25 +8,53 @@ import json
 from mongoengine.errors import NotUniqueError
 from datetime import datetime
 
+
 """
 The first part of this file handles the initialization of the database,
 based on the config file, as well as the routes from the resources/routes file
 """
 app = Flask(__name__)
+#the secret key is used by flask to validate a session. It is used here for demonstration purposes as a simple string
+app.secret_key = "covid-app"
 api=Api(app)
-
 app.config['MONGODB_SETTINGS'] = {
     'host': host_db
 }
 
 initialize_db(app)
 initialize_routes(api)
-
+#the session object holds the login info, and is set to none before user login to prevent unauthorized access
 
 """
 The following section contains the actions for main routes of the applications
 """
+#login page
+@app.route('/login', methods=["GET","POST"])
+def login_page():
+    session['role']='none'
+     #checks if the form is used
+    if request.method == 'POST':
+        #takes the data from form
+        username=request.form['username']
+        password=request.form['password']
+        users = json.loads(open("user_data.json").read())
+        for user in users:
+            if user['username']==username:
+                if user['password']==password:
+                    session['role']=user['role']
+                    return render_template("message.html", title='Επιτυχής εγγραφή', message="H σύνδεση ολοκληρώθηκε με επιτυχία", role=session['role'])
+                    break
+        #if no role has been assigned, no valid user has been found
+        if session['role']=="none":
+            return render_template("login.html", title='Σύνδεση Χρήστη', message="Τα στοιχεία εισόδου δεν είναι σωστά") 
+    else:
+        #result if the form isn't used (which is the default behavior upon opening the page)      
+        return render_template("login.html", title='Σύνδεση Χρήστη')
 
+@app.route('/logout',methods=["GET","POST"])
+def logout_page():
+    session['role']='none'
+    return render_template("message.html", title='Επιτυχής αποσύνδεση', message="Έχετε αποσυνδεθεί με επιτυχία",role=session['role'])
 
 """
 Routes and actions for the pages relates to the cases
@@ -48,7 +76,6 @@ def indexcases():
         case['date']=formatDate(case['date'])
     return render_template("cases.html", title='Περιστατικά', cases=cases)
 
-
 #New case creation
 @app.route('/newCase', methods=['GET','POST'])
 def newCase():
@@ -63,13 +90,15 @@ def newCase():
         doctor = request.form['doctor']
         covidStatus = request.form['covidStatus']
         date = request.form['date']
+        testType= request.form['testType']
         newCase = {
                 "patientID": patientID,
                 "roomn": roomn,
                 "bedn": bedn,
                 "doctor": doctor,
                 "covidStatus":covidStatus,
-                "date":date
+                "date":date,
+                "testType":testType
             }
         r = requests.post(host_flask +'/cases', json = newCase)
         #check the status code of the response r, and presents the relative message, in case of error. Status codes are 
@@ -106,13 +135,15 @@ def caseDets():
             doctor = request.form['doctor']
             covidStatus=request.form['covidStatus']
             date=request.form['date']
+            testType= request.form['testType']
             case = {
                 "patientID":patientID,
                 "roomn":roomn,
                 "bedn":bedn,
                 "doctor":doctor,
                 "covidStatus":covidStatus,
-                "date":date
+                "date":date,
+                "testType":testType
             }
             r = requests.put(host_flask +'/case/'+id, json = case)
             #check the status code of the response r, and presents the relative message, in case of error. Status codes are 
@@ -219,6 +250,9 @@ def patprof():
     elif request.method=='DELETE':
         #the DELETE request is handled by the js file, in order to function through a comfirmation check
         r = requests.delete(host_flask +'/patient/'+id)
+        #Deleting the patient also deletes all the associated cases, in order to avoid the db throwing an error
+        for case in casespat:
+            r = requests.delete(host_flask +'/case/'+case['id']) 
         return render_template("message.html", title='Επιτυχής διαγραφή', message="H διαγραφή ολοκληρώθηκε με επιτυχία")  
     else:  
         return render_template("profiledetails.html", title='Προφίλ ασθενούς', patient=dicts, cases=casespat)
@@ -272,7 +306,6 @@ def searchPat():
 """
 utility functions
 """
-
 #returns a date formatted in dd-mm-yyyy format
 def formatDate(date):
     dateres=datetime.fromisoformat(date)

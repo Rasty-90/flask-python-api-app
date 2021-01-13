@@ -9,9 +9,9 @@
     <p>ΑΜΚΑ: <input class="textbox-form" type='text' name='patientAmka' value="{{patient.amka}}"></input></p>
     <p>Τηλ. επικοινωνίας: <input class="textbox-form" type='text' name='patientContactPhone' value="{{patient.contactphone}}"></input></p>
     <p class="alert-message">{{message}}</p>
-    <button class="button-class" type="submit" value="edit" name="submit">Επεξεργασία</button>
+    <button class="button-class button-uu" type="submit" value="edit" name="submit">Επεξεργασία</button>
     </form>
-    <button class="button-class" onclick="patDelConf()">Διαγραφή</button> <a href="/indexpatients"><button class="button-class">Ακύρωση</button></a>
+    <button class="button-class button-uu" onclick="patDelConf()">Διαγραφή</button> <a href="/indexpatients"><button class="button-class">Ακύρωση</button></a>
     <p class="title-top">ΠΕΡΙΣΤΑΤΙΚΑ ΑΣΘΕΝΟΥΣ</p>
     <table class="table-comp">
         <tr>
@@ -20,6 +20,7 @@
             <th>Υπεύθυνος Ιατρός</th>
             <th>Ημερομηνία</th>
             <th>Covid Test</th>
+            <th>Είδος Test</th>
             <th></th>
         </tr>
         {% for case in cases %}
@@ -29,6 +30,7 @@
             <td>{{case.doctor}}</td>
             <td>{{case.date}}</td>
             <td>{{case.covidStatus}}</td>
+            <td>{{case.testType}}</td>
             <td><a href="/casedetails?id={{case.id}}"><button class="button-class" ><i class="fas fa-edit"></i></button></a></td>
         </tr>
         {% endfor %}

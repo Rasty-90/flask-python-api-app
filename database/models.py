@@ -22,4 +22,4 @@ class Case(gj.Document):
     doctor=db.StringField(required=True,min_length=1)
     covidStatus=db.StringField(required=True,min_length=1)
     date = db.DateTimeField(required=True,min_length=1)
-
+    testType=db.StringField(required=True,min_length=1)

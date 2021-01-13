@@ -20,10 +20,14 @@
       <option value="Αρνητικό">Αρνητικό</option>
       <option value="Αδιευκρίνιστο">Αδιευκρίνιστο</option>
     </select>
+    <select class="textbox-form" id="testType" name="testType">
+      <option value="Rapid">Rapid</option>
+      <option value="Μοριακό">Μοριακό</option>
+    </select>
     <p class="alert-message">{{message}}</p>
-    <button class="button-class" type="submit" value="edit" name="submit">Επεξεργασία</button>
+    <button class="button-class button-uu" type="submit" value="edit" name="submit">Επεξεργασία</button>
     </form>
-    <button class="button-class" onclick="caseDelConf()">Διαγραφή</button> <a href="/indexcases"><button class="button-class">Ακύρωση</button></a>
+    <button class="button-class button-uu" onclick="caseDelConf()">Διαγραφή</button> <a href="/indexcases"><button class="button-class">Ακύρωση</button></a>
 </div>
 {% endblock %}
 
