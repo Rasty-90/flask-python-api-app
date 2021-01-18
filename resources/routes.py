@@ -13,5 +13,4 @@ def initialize_routes(api):
  api.add_resource(CasesApi, '/cases')
  api.add_resource(CaseApi, '/case/<id>')
 
- #TODO: STATUS RESOURCE ENDPOINT
 

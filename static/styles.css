@@ -34,6 +34,10 @@ ul {
     background-color:#b7d7e8;
   }
 
+  li:last-child{
+    float: right;
+  }
+
   /* table styles */
   .table-comp {
     text-align: center;

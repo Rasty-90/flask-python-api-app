@@ -5,9 +5,10 @@
     <p class="title-top">ΕΝΕΡΓΑ ΠΕΡΙΣΤΑΤΙΚΑ</p>
     <p></p>
     <form action="/searchPatients?page=case" method="post"class="float-left">
-        Αναζήτηση με επίθετο ασθενούς/AMKA: <input type="text" placeholder="{{searchPh}}" name="search" class="textbox-form">
-        <button type="submit" class="button-class"><i class="fas fa-search"></i></i></button>
-        </form>
+        Αναζήτηση με επίθετο ασθενούς: <input type="text"  name="searchSurname" class="textbox-form"> <button name="search" type="submit" value="searchSurname" class="button-class"><i class="fas fa-search"></i></i></button>
+        Αναζήτηση με ΑΜΚΑ: <input type="text"  name="searchAMKA" class="textbox-form"> <button name="search" type="submit" value="searchAMKA" class="button-class"><i class="fas fa-search"></i></i></button>
+        Αναζήτηση με Ημερομηνία: <input type="date"  name="searchDate" class="textbox-form" min="2020-01-01" max="2021-12-31"> <button  name="search" type="submit" value="searchDate" class="button-class"><i class="fas fa-search"></i></i></button>
+        </form> 
         <a href="/newCase"><button class="button-class button-un float-right">Νέο Περιστατικό</button></a>
         <table class="table-comp">
             <tr>

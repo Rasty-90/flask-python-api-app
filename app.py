@@ -42,7 +42,7 @@ def login_page():
             if user['username']==username:
                 if user['password']==password:
                     session['role']=user['role']
-                    return render_template("message.html", title='Επιτυχής εγγραφή', message="H σύνδεση ολοκληρώθηκε με επιτυχία", role=session['role'])
+                    return render_template("message2.html", title='Επιτυχής εγγραφή', message="H σύνδεση ολοκληρώθηκε με επιτυχία", role=session['role'])
                     break
         #if no role has been assigned, no valid user has been found
         if session['role']=="none":
@@ -54,7 +54,7 @@ def login_page():
 @app.route('/logout',methods=["GET","POST"])
 def logout_page():
     session['role']='none'
-    return render_template("message.html", title='Επιτυχής αποσύνδεση', message="Έχετε αποσυνδεθεί με επιτυχία",role=session['role'])
+    return render_template("message2.html", title='Επιτυχής αποσύνδεση', message="Έχετε αποσυνδεθεί με επιτυχία",role=session['role'])
 
 """
 Routes and actions for the pages relates to the cases
@@ -264,26 +264,44 @@ coming from the patient list page or the case list page
 
 @app.route('/searchPatients',methods=['GET','POST'])
 def searchPat():
-    #takes the search key from the textbox
-    patientargs=request.form['search']
+    #stores which page the search was initializec
     page=request.args.get('page')
     #empty list for the results
     patientres = []
-    #first search is based on surname 
-    patientssname = requests.get(host_flask +'/patients?surname='+patientargs)
-    patients = json.loads(patientssname.content)
-    #add the surname search results in the result list
-    for patient in patients:
-        patientres.append(patient)
-    #second search based on amka
-    patientsamka = requests.get(host_flask +'/patients?amka='+patientargs)
-    patients = json.loads(patientsamka.content)
-    #add the amka search results in the result list
-    for patient in patients:
-        patientres.append(patient)
-    #checks if the action comes from the patients or the cases
+    #checks which search button was used
+    if request.form['search'] == 'searchSurname':
+        #takes the search key from the textbox(surname, amka or date)
+        patientargs=request.form['searchSurname']
+        
+        patientssname = requests.get(host_flask +'/patients?surname='+patientargs)
+        patients = json.loads(patientssname.content)
+        #add the surname search results in the result list
+        for patient in patients:
+            patientres.append(patient)
+    if request.form['search']=='searchAMKA':
+        patientargs=request.form['searchAMKA']
+        patientssname = requests.get(host_flask +'/patients?amka='+patientargs)
+        patients = json.loads(patientssname.content)
+         #add the amka search results in the result list
+        for patient in patients:
+            patientres.append(patient)
+    #the searchDatecase acts differently since it loads cases as results, and not patients
+    if request.form['search']=='searchDate':
+        patientargs=request.form['searchDate']
+        casesdate = requests.get(host_flask +'/cases?date='+patientargs)
+        caseres = json.loads(casesdate.content)
+        print (patientargs)
+        for case in caseres:
+            casesres = requests.get(host_flask +'/patients?id='+case['patientID'])
+            casespat = json.loads(casesres.content)
+            #the resulting dictionary will always contain 1 record, since every case only has one patient associated with it, and is acceses through the [0]
+            case['patientSurname']=casespat[0]['surname']
+            case['patientName']=casespat[0]['name']
+            case['date']=formatDate(case['date'])
+        return render_template("cases.html", title='Περιστατικά', cases=caseres,searchDa=patientargs)
+    #checks if the action comes from the patients or the cases    
     if page=="patients":
-        #we simply return the patients results in the list 
+    #we simply return the patients results in the list 
         return render_template("patients.html", title='Aσθενείς', patients=patientres,searchPh=patientargs)
     else:
         #if the action comes for the case page, we need to query the base for cases that belong to the patient/patients
